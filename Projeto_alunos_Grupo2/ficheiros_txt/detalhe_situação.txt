@@ -1,0 +1,19 @@
+
+
+Situação : Marcação sem cartao; 
+
+	Acção: Ir ao quiosque-gerar cod temp-usar cod temp para fazer marcação, edição e validação(até as 9h15); é necessário nif
+
+Situação : Validações sem cartão;
+
+	Acção: ir ao kiosque, gerar código temporário, validar no refeitório. 
+
+Situação : Tenho cartão mas nao tenho marcação para hoje;
+
+	Acção: Facultar cartao à senhora e ela se possivel faz a marcação/validação. no ecrã cantina vai ter uma opção da validação sem cartao. vai aprecer uma lista dos codigos excepcionais 	gerados no dia e ela vai ter de confirmar.
+
+
+Situação: Incrementar refeições depos da hora?
+
+	Acção:A pensar
+

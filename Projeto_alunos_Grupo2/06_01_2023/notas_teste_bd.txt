@@ -1,0 +1,20 @@
+Admin-falta validações password. pass=repass, caracteres incluidos etc etc
+
+Botão voltar não funciona directamente do painel criar
+
+Não existem avisos de dados incorrectos
+
+Necessário algum tipo de controlo ou registo na criação de super admins?
+
+Eliminar registos segundo limite de  tempo?
+
+Painel aluno ainda n tem funcionalidades ativas
+
+Falta adicionar código da turma à interface
+
+Funcionalidade importar: não existe aviso de sucecido ou não, não exclui ficheiros não excel mas tb não faz nada com ficheiros de outro tipo
+
+
+O que acontece se se importar o mesmo ficheiro excel?
+
+Especificar no butão importar qual o seu efeito

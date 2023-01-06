@@ -1,0 +1,6 @@
+EM TODAS AS PAGINAS depois do init components 
+getContentPane().setBackground(new java.awt.Color(255, 204, 153));
+
+UMA LABEL NO TOPO DE CADA PAGINA DE ADMIN
+if (jLabel1.getText().equals("jLabel1")) {
+            jLabel1.setText("" + login);

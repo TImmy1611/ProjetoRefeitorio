@@ -1,0 +1,24 @@
+GRANT ALL PRIVILEGES ON dbcantina.* TO 'root'@'%' IDENTIFIED BY '' 
+
+
+-----------------------------------------------------
+public static Connection ligacao() {
+        String url = "jdbc:mysql://192.168.12.75:3306/dbcantina?useSSL=false&serverTimezone=UTC";//integratedSecurity=true;";
+        String user = "root";
+        String password = "";
+        Connection liga = null;
+        try {
+            liga = DriverManager.getConnection(url, user, password);
+        } catch (SQLException ex) {
+            System.out.println("Erro na tentativa de ligação à base de dados");
+           ex.printStackTrace();
+        }
+        return liga;
+    }
+--------------------------------------------------------
+
+
+binding-address=0.0.0.0
+
+
+https://prnt.sc/_UKA23sTUAGn

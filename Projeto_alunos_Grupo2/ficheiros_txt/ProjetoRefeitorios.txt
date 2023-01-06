@@ -1,0 +1,44 @@
+REQUISITOS:
+Marcacao dia anterior ou no dia
+Ementa disponivel
+No dia anterior sabe-se a expectativa de refeicoes
+SIMPLES(user friendly)
+Aplicativo retorna relatorio, para email refeitorio(listagem por turma, com n refeicoes comidas)
+Máximo de amplitude até: 10 refeicoes por dia(por tipo) (A contar com marcacoes no dia e desmarcacoes)
+
+RELATORIO MENSAL (Previosinamento, Cencal):
+ Id Curso		     
+Reficoes marcadas/consumidas (percentagem)
+
+ETIQUETA ALUNO
+N_etiqueta, 
+Nome_aluno, 
+Numero_aluno, 
+Residente(S/N), 
+Curso
+
+DISPOSITIVO MARCADOR
+Sensor de Etiqueta
+Calendário Semanal, com ementa e possíveis alergénios (Com refeições marcadas e refeições por marcar)
+Para peq.Almoço (S/N) para Jantar (S/N, mostra ementa)
+Calendário, com feriados e tolerancia de ponto etc. EDITAVEL
+Até 9:15Horas no dia para marcacao (Marcar/desmarcar)
+
+
+DISPOSITIVO CONFIRMAÇÃO
+Sensor de etiqueta, Ecrã de Visionamento
+Contagem de refeições marcadas/Consumidas, geral e particular do tipo de refeicao
+Interface para confirmar o serviço e marcações espontâneas (com a presença do aluno)
+
+
+FASES DE UTILIZAÇÃO
+1-Cartao ( N_etiqueta, Nome, n_aluno, Residente(S/N), Curso ) Reutiliza
+
+2-Dispositivo Marcador (Semanal), mostra ementa e possíveis alergénios
+Para peq.almoço e Jantar(mostra ementa) apenas confirma sim/nao
+
+3-Dispositivo Confirmação (Quantos comeram, quantos faltam, quantos veg.carne.peixe)
+Senhoras do bar podem incrementar, com a presença do formando somente para o dia
+
+
+

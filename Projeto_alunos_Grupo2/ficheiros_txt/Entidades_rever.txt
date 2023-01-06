@@ -1,0 +1,19 @@
+Entidades
+
+-Utilizador( NIF(chave primaria) ,N_Etiqueta(Chave estrangeira), nºAluno, Nome_Aluno )
+
+-Cartao(N_Etiqueta(primaria))
+
+-Refeicao(id_ref, n_etiqueta, prato, data, estado_conf)
+
+-BD, de utilizador, cartoes de marcacoes e ementas
+
+Tabelas tipo
+-Formando(ativo/desativo,residente/nao_residente)
+
+Tipo_Regime(id_tipo_regime)
+Tipo_Residencia(id_tipo_residencia)
+Estado_Atividade(id_estado_atividade)
+
+-Regime_turma(Diurno/noturno)
+-Refeicao(Veg,Carne,Peixe)
