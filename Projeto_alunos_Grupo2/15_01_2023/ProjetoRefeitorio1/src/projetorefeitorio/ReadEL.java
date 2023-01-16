@@ -3,6 +3,9 @@ package projetorefeitorio;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,7 +14,9 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static org.apache.logging.log4j.core.util.Assert.isEmpty;
 import org.apache.poi.xssf.usermodel.*;
+import static projetorefeitorio.LigaBD.ligacao;
 
 /**
  *
@@ -19,7 +24,23 @@ import org.apache.poi.xssf.usermodel.*;
  */
 public class ReadEL {
 
-    public static void main(String filename) throws FileNotFoundException, IOException {
+    public static void main(String filename) throws FileNotFoundException, IOException, SQLException {
+        //DECLARAÇÃO DE VARIÁVEIS
+        boolean encontrado;
+        String nome = "";
+        String email = "";
+        int nif = 0;
+        int codigo = 0;
+        String dataF = "";
+        String dataI = "";
+        ArrayList<Integer> alunos = new ArrayList<>();
+
+        Connection liga = ligacao();
+        //VERIFICA SE O FORMANDO JÁ EXISTE NA TABELA
+        String query;
+        PreparedStatement ps;
+        ResultSet rs;
+
         String excelFilePath = filename;
         FileInputStream inputstream = new FileInputStream(excelFilePath);
 
@@ -37,22 +58,15 @@ public class ReadEL {
         System.out.println(idTurma);
 
         ////LOOP FOR PARA PERCORRER O FICHEIRO E EXTRAIR INFO
-        String nome = "";
-        String email = "";
-        int nif = 0;
-        int codigo = 0;
-        String dataF = "";
-        String dataI = "";
-        ArrayList<Integer> alunos = new ArrayList<>();
-        
         int rows = sheet.getLastRowNum();
         int cols = sheet.getRow(1).getLastCellNum();
 
         for (int r = 1; r <= rows; r++) {
             XSSFRow row = sheet.getRow(r);
-
+            encontrado = false;
             for (int c = 0; c < cols; c++) {
                 XSSFCell cell = row.getCell(c);
+
                 switch (cell.getCellType()) {
                     case STRING:
                         if (c == 1) {
@@ -64,14 +78,21 @@ public class ReadEL {
 
                         }
                         if (c == 8) {
-                            //nif = Integer.parseInt(cell.getStringCellValue());                            
-                            nif=0;
+                            nif = Integer.parseInt(cell.getStringCellValue());
                         }
                         break;
                     case NUMERIC:
                         if (c == 0) {
                             codigo = (int) cell.getNumericCellValue();
+                            query = "SELECT idFormando FROM formando WHERE idFormando='" + codigo + "'";
+                            ps = liga.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE,
+                                    ResultSet.CONCUR_UPDATABLE);
+                            rs = ps.executeQuery();
+                            rs.first();
 
+                            if (!isEmpty(rs.first())) {
+                                encontrado = true;
+                            }
                         }
                         if (c == 4) {
                             dataI = String.valueOf(cell.getNumericCellValue());
@@ -94,16 +115,17 @@ public class ReadEL {
                 }
 
             }
-            /*System.out.println("Nome: " + nome);
-            System.out.println("Email: " + email);
-            System.out.println("NIF: " + nif);
-            System.out.println("Codigo: " + codigo);
-            System.out.println();*/
+            System.out.println(encontrado);
+
             alunos.add(codigo);
-            try {
-                LigaBD.registaFormando(nome, email, nif, codigo);
-            } catch (SQLException ex) {
-                Logger.getLogger(ReadEL.class.getName()).log(Level.SEVERE, null, ex);
+            if (encontrado) {
+                LigaBD.MudarAtividadeFormando(codigo, 1);
+            } else {
+                try {
+                    LigaBD.registaFormando(nome, email, nif, codigo);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ReadEL.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         //TODO SQL idTurma, nome, email, nif, codigo, dataI, dataF
@@ -114,7 +136,7 @@ public class ReadEL {
         } catch (SQLException ex) {
             Logger.getLogger(ReadEL.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         try {
             LigaBD.associarFormandoTurma(alunos, idTurma);
         } catch (SQLException ex) {
