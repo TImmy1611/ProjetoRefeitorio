@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package rfid_limpo;
+package projetorefeitorio;
 
 import java.awt.EventQueue;
 import com.fazecast.jSerialComm.SerialPort;
@@ -78,12 +78,12 @@ public class RFID_Limpo {
 
     }
 
-    public void receive(String line) {
-        if (line == null) {
-            return;
+    public String receive(String line) {
+        if (line != null) {
+            return line;
         }
         String welcome = "Welkom, ";
-        System.out.println(line);
+        return null;
 
     }
 }

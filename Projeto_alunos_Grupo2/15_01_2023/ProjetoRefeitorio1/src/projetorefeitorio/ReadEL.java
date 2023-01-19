@@ -115,18 +115,16 @@ public class ReadEL {
                 }
 
             }
-            System.out.println(encontrado);
-
             alunos.add(codigo);
             if (encontrado) {
                 LigaBD.MudarAtividadeFormando(codigo, 1);
-            } else {
-                try {
-                    LigaBD.registaFormando(nome, email, nif, codigo);
-                } catch (SQLException ex) {
-                    Logger.getLogger(ReadEL.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
+            try {
+                LigaBD.registaFormando(nome, email, nif, codigo);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReadEL.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
         //TODO SQL idTurma, nome, email, nif, codigo, dataI, dataF
         String desc = JOptionPane.showInputDialog("Descrição da turma");

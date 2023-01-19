@@ -55,16 +55,17 @@ public class LigaBD {
 
     public static void registaFormando(String nome, String email, int nif, int codigo) throws SQLException {
         Connection liga = ligacao();
-        String query = "INSERT INTO formando(idFormando,Nome,Email,NIF,Tipo_Residencia_idTipo_Residencia,Estado_atividade_idEstado_atividade)"
+        String query = "INSERT IGNORE INTO formando(idFormando,Nome,Email,NIF,Tipo_Residencia_idTipo_Residencia,Estado_atividade_idEstado_atividade)"
                 + "VALUES(?,?,?,?,?,?)";
         PreparedStatement ps = liga.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
+
         ps.setInt(1, codigo);
         ps.setString(2, nome);
         ps.setString(3, email);
         ps.setInt(4, nif);
         ps.setInt(5, 0);
-        ps.setInt(6, 0);
+        ps.setInt(6, 1);
         ps.execute();
     }
 
@@ -97,6 +98,20 @@ public class LigaBD {
             ps.setInt(2, alunos.get(i));
             ps.execute();
         }
+    }
+
+    public static void associarFormandoCartao(int idAluno, int cod_cartao) throws SQLException {
+        Connection liga = ligacao();
+        String query = "SELECT idCartao FROM cartao WHERE idCartao = '" + cod_cartao + "'";
+        PreparedStatement ps = liga.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+        ResultSet rs = ps.executeQuery();
+        rs.first();
+        String query2 = "INSERT INTO cartao_has_formando(idCartao,idFormando)" + "VALUES(?,?)";
+        ps = liga.prepareStatement(query2);
+        ps.setInt(1, cod_cartao);
+        ps.setInt(2, idAluno);
+        ps.execute();
     }
 
     public static void MudarDataFimTurma(int id, String dataF) throws SQLException {
@@ -138,28 +153,13 @@ public class LigaBD {
         String sql = "UPDATE formando SET Estado_atividade_idEstado_atividade=? WHERE idFormando='" + id + "'";
         PreparedStatement ps = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        if (est==1) {
-            ps.setInt(1, 0);
+        if (est == 0) {
+            ps.setInt(1, 1);
             ps.executeUpdate();
         } else {
-            ps.setInt(1, 1);
+            ps.setInt(1, 0);
             ps.executeUpdate();
         }
     }
-//        public static void associarFormandoCartao(int idAluno, String cod_cartao) throws SQLException {
-//        Connection liga = ligacao();
-//        String query = "SELECT idTurma FROM turma WHERE cod_curso = '" + cod_curso + "'";
-//        PreparedStatement ps = liga.prepareStatement(query,ResultSet.TYPE_SCROLL_SENSITIVE,
-//                    ResultSet.CONCUR_UPDATABLE);
-//        ResultSet rs = ps.executeQuery();
-//        rs.first();
-//        int idturma = rs.getInt("idTurma");
-//        String query2 = "INSERT INTO turma_has_formando(Turma_idTurma,Formando_idFormando)" + "VALUES(?,?)";
-//        ps = liga.prepareStatement(query2);
-//        for (int i = 0; i < alunos.size(); i++) {
-//            ps.setInt(1, idturma);
-//            ps.setInt(2, alunos.get(i));
-//            ps.execute();
-//        }
-//    }FF
+
 }

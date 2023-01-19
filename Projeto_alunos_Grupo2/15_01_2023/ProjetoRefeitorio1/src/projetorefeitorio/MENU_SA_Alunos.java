@@ -13,8 +13,10 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 import javax.swing.table.DefaultTableModel;
+import static projetorefeitorio.LigaBD.associarFormandoCartao;
 import static projetorefeitorio.Login1.HoverBotao;
 import static projetorefeitorio.Login1.HoverSair;
+import projetorefeitorio.RFID_Limpo;
 
 /**
  *
@@ -265,7 +267,8 @@ public class MENU_SA_Alunos extends javax.swing.JFrame {
             if (i == JOptionPane.YES_OPTION) {
                 try {
                     int p = (int) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
-                    int q = (int) jTable1.getValueAt(jTable1.getSelectedRow(), 5);
+                    int q;
+                    q = (int) Integer.parseInt((String) jTable1.getValueAt(jTable1.getSelectedRow(), 5));
                     LigaBD.MudarAtividadeFormando(p, q);
                     MENU_SA_Alunos tb = null;
                     tb = new MENU_SA_Alunos();
@@ -305,12 +308,22 @@ public class MENU_SA_Alunos extends javax.swing.JFrame {
 
     private void btn_cartaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cartaoActionPerformed
         // TODO add your handling code here:
+        RFID_Limpo frame = new RFID_Limpo();
+        int cod_cartao;
+
         if (jTable1.getSelectedRow() >= 0) {
             int i = JOptionPane.showConfirmDialog(null, "Pretende Associar Cartão?", "Tem a Certeza?", JOptionPane.YES_NO_OPTION);
             if (i == JOptionPane.YES_OPTION) {
+                mensageminfo("Passe o cartão no leitor!");
                 String q = (String) jTable1.getValueAt(jTable1.getSelectedRow(), 5);
+                int formando = (int) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
                 if (q.equals("1")) {
-                    
+                    cod_cartao = Integer.parseInt(frame.receive("7"));
+                    try {
+                        associarFormandoCartao(formando,cod_cartao);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MENU_SA_Alunos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     mensageminfo("Sucesso!");
                 } else {
                     mensagemErro("Não pode associar cartão a aluno inativo");
@@ -396,8 +409,7 @@ public class MENU_SA_Alunos extends javax.swing.JFrame {
                 ps2 = conn.prepareStatement(sql2, ResultSet.TYPE_SCROLL_SENSITIVE,
                         ResultSet.CONCUR_UPDATABLE);
                 rs2 = ps2.executeQuery();
-                rs2.beforeFirst();
-                rs2.next();
+                rs2.first();
                 modelo.addRow(new Object[]{rs2.getInt("idFormando"), rs2.getString("Nome"), rs2.getString("Email"), rs2.getString("NIF"), rs2.getInt("Tipo_Residencia_idTipo_Residencia"), rs2.getString("Estado_atividade_idEstado_atividade")});
             } while (rs.next());
 
